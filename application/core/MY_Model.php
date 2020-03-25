@@ -102,6 +102,12 @@ class MY_Model extends CI_Model
         return $this->db->affected_rows();
     }
 
+    /**
+     * Menentukan Limit Data untuk ditampilkan
+     *
+     * @param [type] $page
+     * @return void
+     */
     public function paginate($page)
     {
         $this->db->limit(

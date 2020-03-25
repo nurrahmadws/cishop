@@ -49,6 +49,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'welcome';
+$route['default_controller'] = 'home';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+/**
+ * ':num' merupakan halaman dari masing-masing data yang dikeluarkan
+ * '$1' mewakili ':num' diatas, merupakan parameter dari '$page' yang ada didalam method index di Category Controller
+ */
+$route['category/(:num)'] = 'category/index/$1';
