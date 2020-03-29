@@ -1,19 +1,19 @@
     <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
             <div class="container">
-                <a class="navbar-brand" href="index.html">Olshop</a>
+                <a class="navbar-brand" href="<?= base_url('/') ?>">Olshop</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="<?= base_url('/') ?>">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</a>
                             <dvi class="dropdown-menu" aria-labelledby="dropdown-1">
-                                <a href="admin-category.html" class="dropdown-item">Kategori</a>
-                                <a href="admin-product.html" class="dropdown-item">Produk</a>
+                                <a href="<?= base_url('/category') ?>" class="dropdown-item">Kategori</a>
+                                <a href="<?= base_url('/product') ?>" class="dropdown-item">Produk</a>
                                 <a href="admin-order.html" class="dropdown-item">Order</a>
                                 <a href="admin-users.html" class="dropdown-item">Pengguna</a>
                             </dvi>
