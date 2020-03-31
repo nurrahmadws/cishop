@@ -7,14 +7,14 @@
 					<span>Produk</span>
 					<a href="<?= base_url('product/create')?>" class="btn btn-sm btn-secondary">Tambah</a>
 					<div class="float-right">
-						<form action="#">
+						<form action="<?= base_url('product/search') ?>" method="POST">
 							<div class="input-group">
-								<input type="text" class="form-control form-control-sm text-center" placeholder="Cari">
+								<input type="text" class="form-control form-control-sm text-center" placeholder="Cari" value="<?= $this->session->userdata('keyword') ?>">
 								<div class="input-group-append">
 									<button type="submit" class="btn btn-secondary btn-sm">
 										<i class="fas fa-search"></i>
 									</button>
-									<a href="#" class="btn btn-secondary btn-sm">
+									<a href="<?= base_url('product/reset') ?>" class="btn btn-secondary btn-sm">
 										<i class="fas fa-eraser"></i>
 									</a>
 								</div>
@@ -50,16 +50,18 @@
 								<?= $row->is_available ? 'Tersedia' : 'Kosong' ?>
 							</td>
 							<td>
-								<form action="#">
-									<a href="#">
-										<button class="btn btn-sm">
-											<i class="fas fa-edit text-info"></i>
-										</button>
-									</a>
+								
+								<a href="<?= base_url("/product/edit/$row->id") ?>">
+									<button class="btn btn-sm">
+										<i class="fas fa-edit text-info"></i>
+									</button>
+								</a>
+								<?= form_open(base_url("/product/delete/$row->id"), ['method'=>'POST']) ?>
+									<?= form_hidden('id', $row->id) ?>
 									<button type="submit" class="btn btn-sm" onclick="return confirm('Anda Yakin?')">
 										<i class="fas fa-trash text-danger"></i>
 									</button>
-								</form>
+								<?= form_close() ?>
 							</td>
 						</tr>
 						<?php endforeach ?>
