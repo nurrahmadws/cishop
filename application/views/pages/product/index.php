@@ -40,7 +40,7 @@
 							<td><?= $no?></td>
 							<td>
 								<p>
-									<img src="<?= $row->image ? base_url("images/product/$row->image") : base_url("image/product/default.jpg") ?>" alt="" height="50">
+									<img src="<?= $row->image ? base_url("images/product/$row->image") : base_url("images/product/default.jpg") ?>" alt="" height="50">
 									<?= $row->product_title ?>
 								</p>
 							</td>
