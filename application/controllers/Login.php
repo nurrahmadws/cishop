@@ -14,18 +14,19 @@ class Login extends MY_Controller {
         {
             redirect(base_url());
             return;
-        }
+		}
+		$this->load->model('Login_model');
     }
 
     public function index()
     {
         if (!$_POST) {
-            $input = (object) $this->login->getDefaultValues();
+            $input = (object) $this->Login_model->getDefaultValues();
         }else{
             $input = (object) $this->input->post(null, true);
         }
 
-        if (!$this->login->validate()) {
+        if (!$this->Login_model->validate()) {
             $data['title'] = 'Login';
             $data['input'] = $input;
             $data['page']  = 'pages/auth/login';
@@ -34,7 +35,7 @@ class Login extends MY_Controller {
             return;
         }
 
-        if ($this->login->run($input)) {
+        if ($this->Login_model->run($input)) {
             $this->session->set_flashdata('success', 'Berhasil Melakukan Login');
             redirect(base_url());
         }else{

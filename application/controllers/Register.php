@@ -12,18 +12,19 @@ class Register extends MY_Controller {
         if ($is_login) {
             redirect(base_url());
             return;
-        }
+		}
+		$this->load->model('Register_model');
     }
 
     public function index()
     {
         if (!$_POST) {
-            $input = (object) $this->register->getDefaultValues();
+            $input = (object) $this->Register_model->getDefaultValues();
         }else{
             $input = (object) $this->input->post(null, true);
         }
 
-        if (!$this->register->validate()) {
+        if (!$this->Register_model->validate()) {
             $data['title'] = 'Register';
             $data['input'] = $input;
             $data['page'] = 'pages/auth/register';
@@ -31,7 +32,7 @@ class Register extends MY_Controller {
             return;
         }
 
-        if ($this->register->run($input)) {
+        if ($this->Register_model->run($input)) {
             $this->session->set_flashdata('success', 'Berhasil Melakukan Registrasi');
             redirect(base_url());
         }else{

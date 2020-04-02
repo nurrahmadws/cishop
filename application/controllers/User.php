@@ -11,15 +11,16 @@ class User extends MY_Controller
 	{
 		parent::__construct();
 		//Do your magic here
+		$this->load->model('User_model');
 	}
 	
 
 	public function index($page = null)
 	{
 		$data['title'] 		= 'Admin: Pengguna';
-		$data['content']	= $this->user->paginate($page)->get();
-		$data['total_rows'] = $this->user->count();
-		$data['pagination'] = $this->user->makePagination(
+		$data['content']	= $this->User_model->paginate($page)->get();
+		$data['total_rows'] = $this->User_model->count();
+		$data['pagination'] = $this->User_model->makePagination(
 			base_url('user'), 2, $data['total_rows']
 		);
 		$data['page']		= 'pages/user/index';
@@ -30,7 +31,7 @@ class User extends MY_Controller
 	public function create()
 	{
 		if (!$_POST) {
-			$input	= (object) $this->user->getDefaultValues();
+			$input	= (object) $this->User_model->getDefaultValues();
 		} else {
 			$input	= (object) $this->input->post(null, true);
 			$this->load->library('form_validation');
@@ -40,7 +41,7 @@ class User extends MY_Controller
 
 		if (!empty($_FILES) && $_FILES['image']['name'] !== '') {
 			$imageName	= url_title($input->name, '-', true) . '-' . date('YmdHis');
-			$upload		= $this->user->uploadImage('image', $imageName);
+			$upload		= $this->User_model->uploadImage('image', $imageName);
 			if ($upload) {
 				$input->image	= $upload['file_name'];
 			} else {
@@ -48,7 +49,7 @@ class User extends MY_Controller
 			}
 		}
 
-		if (!$this->user->validate()) {
+		if (!$this->User_model->validate()) {
 			$data['title']			= 'Tambah Pengguna';
 			$data['input']			= $input;
 			$data['form_action']	= base_url('user/create');
@@ -58,7 +59,7 @@ class User extends MY_Controller
 			return;
 		}
 
-		if ($this->user->create($input)) {
+		if ($this->User_model->create($input)) {
 			$this->session->set_flashdata('success', 'Data berhasil disimpan!');
 		} else {
 			$this->session->set_flashdata('error', 'Oops! Terjadi suatu kesalahan');
@@ -71,7 +72,7 @@ class User extends MY_Controller
 	{
 		$email		= $this->input->post('email');
 		$id			= $this->input->post('id');
-		$user	= $this->user->where('email', $email)->first();
+		$user	= $this->User_model->where('email', $email)->first();
 
 		if ($user) {
 			if ($id == $user->id) {

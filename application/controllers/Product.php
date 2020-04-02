@@ -5,21 +5,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Product extends MY_Controller 
 {
 	
-	// public function __construct()
-	// {
-	// 	parent::__construct();
-	// 	$role = $this->session->userdata('role');
-	// 	if ($role != 'admin') {
-	// 		redirect(base_url('/'));
-	// 		return;
-	// 	}
-	// }
+	public function __construct()
+	{
+		parent::__construct();
+		// $role = $this->session->userdata('role');
+		// if ($role != 'admin') {
+		// 	redirect(base_url('/'));
+		// 	return;
+		// }
+		$this->load->model('Product_model');
+	}
 	
 
 	public function index($page = null)
 	{
 		$data['title']		= 'Admin: Produk';
-		$data['content']	= $this->product->select(
+		$data['content']	= $this->Product_model->select(
 				[
 					'product.id', 'product.title AS product_title', 'product.image', 
 					'product.price', 'product.is_available',
@@ -29,8 +30,8 @@ class Product extends MY_Controller
 			->join('category')
 			->paginate($page)
 			->get();
-		$data['total_rows']	= $this->product->count();
-		$data['pagination']	= $this->product->makePagination(
+		$data['total_rows']	= $this->Product_model->count();
+		$data['pagination']	= $this->Product_model->makePagination(
 			base_url('product'), 2, $data['total_rows']
 		);
 		$data['page']		= 'pages/product/index';
@@ -48,7 +49,7 @@ class Product extends MY_Controller
 
 		$keyword	= $this->session->userdata('keyword');
 		$data['title']		= 'Admin: Produk';
-		$data['content']	= $this->product->select(
+		$data['content']	= $this->Product_model->select(
 				[
 					'product.id', 'product.title AS product_title', 'product.image', 
 					'product.price', 'product.is_available',
@@ -60,8 +61,8 @@ class Product extends MY_Controller
 			->orLike('description', $keyword)
 			->paginate($page)
 			->get();
-		$data['total_rows']	= $this->product->like('product.title', $keyword)->orLike('description', $keyword)->count();
-		$data['pagination']	= $this->product->makePagination(
+		$data['total_rows']	= $this->Product_model->like('product.title', $keyword)->orLike('description', $keyword)->count();
+		$data['pagination']	= $this->Product_model->makePagination(
 			base_url('product/search'), 3, $data['total_rows']
 		);
 		$data['page']		= 'pages/product/index';
@@ -78,14 +79,14 @@ class Product extends MY_Controller
 	public function create()
 	{
 		if (!$_POST) {
-			$input	= (object) $this->product->getDefaultValues();
+			$input	= (object) $this->Product_model->getDefaultValues();
 		} else {
 			$input	= (object) $this->input->post(null, true);
 		}
 
 		if (!empty($_FILES) && $_FILES['image']['name'] !== '') {
 			$imageName	= url_title($input->title, '-', true) . '-' . date('YmdHis');
-			$upload		= $this->product->uploadImage('image', $imageName);
+			$upload		= $this->Product_model->uploadImage('image', $imageName);
 			if ($upload) {
 				$input->image	= $upload['file_name'];
 			} else {
@@ -93,7 +94,7 @@ class Product extends MY_Controller
 			}
 		}
 
-		if (!$this->product->validate()) {
+		if (!$this->Product_model->validate()) {
 			$data['title']			= 'Tambah Produk';
 			$data['input']			= $input;
 			$data['form_action']	= base_url('product/create');
@@ -103,7 +104,7 @@ class Product extends MY_Controller
 			return;
 		}
 
-		if ($this->product->create($input)) {
+		if ($this->Product_model->create($input)) {
 			$this->session->set_flashdata('success', 'Data berhasil disimpan!');
 		} else {
 			$this->session->set_flashdata('error', 'Oops! Terjadi suatu kesalahan');
@@ -114,7 +115,7 @@ class Product extends MY_Controller
 
 	public function edit($id)
 	{
-		$data['content'] = $this->product->where('id', $id)->first();
+		$data['content'] = $this->Product_model->where('id', $id)->first();
 
 		if (!$data['content']) {
 			$this->session->set_flashdata('warning', 'Maaf, data tidak dapat ditemukan');
@@ -129,10 +130,10 @@ class Product extends MY_Controller
 
 		if (!empty($_FILES) && $_FILES['image']['name'] !== '') {
 			$imageName	= url_title($data['input']->title, '-', true) . '-' . date('YmdHis');
-			$upload		= $this->product->uploadImage('image', $imageName);
+			$upload		= $this->Product_model->uploadImage('image', $imageName);
 			if ($upload) {
 				if ($data['content']->image !== '') {
-					$this->product->deleteImage($data['content']->image);
+					$this->Product_model->deleteImage($data['content']->image);
 				}
 				$data['input']->image	= $upload['file_name'];
 			} else {
@@ -140,7 +141,7 @@ class Product extends MY_Controller
 			}
 		}
 
-		if (!$this->product->validate()) {
+		if (!$this->Product_model->validate()) {
 			$data['title']			= 'Ubah Produk';
 			$data['form_action']	= base_url("product/edit/$id");
 			$data['page']			= 'pages/product/form';
@@ -150,7 +151,7 @@ class Product extends MY_Controller
 		}
 
 
-		if ($this->product->where('id', $id)->update($data['input'])) {
+		if ($this->Product_model->where('id', $id)->update($data['input'])) {
 			$this->session->set_flashdata('success', 'Data berhasil disimpan!');
 		} else {
 			$this->session->set_flashdata('error', 'Oops! Terjadi suatu kesalahan');
@@ -165,15 +166,15 @@ class Product extends MY_Controller
 			redirect(base_url('product'));
 		}
 
-		$product = $this->product->where('id', $id)->first();
+		$product = $this->Product_model->where('id', $id)->first();
 
 		if (!$product) {
 			$this->session->set_flashdata('warning', 'Maaf, data tidak dapat ditemukan');
 			redirect(base_url('product'));
 		}
 
-		if ($this->product->where('id', $id)->delete()) {
-			$this->product->deleteImage($product->image);
+		if ($this->Product_model->where('id', $id)->delete()) {
+			$this->Product_model->deleteImage($product->image);
 			$this->session->set_flashdata('success', 'Data sudah berhasil dihapus!');
 		} else {
 			$this->session->set_flashdata('error', 'Oops! Terjadi suatu kesalahan!');
@@ -186,7 +187,7 @@ class Product extends MY_Controller
 	{
 		$slug		= $this->input->post('slug');
 		$id			= $this->input->post('id');
-		$product	= $this->product->where('slug', $slug)->first();
+		$product	= $this->Product_model->where('slug', $slug)->first();
 
 		if ($product) {
 			if ($id == $product->id) {

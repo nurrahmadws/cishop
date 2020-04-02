@@ -8,16 +8,17 @@ class Category extends MY_Controller
     public function __construct()
     {
         parent::__construct();
-        //Do your magic here
+		//Do your magic here
+		$this->load->model('Category_model');
     }
     
 
     public function index($page = null)
     {
         $data['title']      = 'Admin: Category';
-        $data['content']    = $this->category->paginate($page)->get();
-        $data['total_rows'] = $this->category->count();
-        $data['pagination'] = $this->category->makePagination(base_url('category'), 2, $data['total_rows']);
+        $data['content']    = $this->Category_model->paginate($page)->get();
+        $data['total_rows'] = $this->Category_model->count();
+        $data['pagination'] = $this->Category_model->makePagination(base_url('category'), 2, $data['total_rows']);
         $data['page']       = 'pages/category/index';
         $this->view($data);
 	}
@@ -32,9 +33,9 @@ class Category extends MY_Controller
 
 		$keyword	= $this->session->userdata('keyword');
 		$data['title']		= 'Admin: Category';
-		$data['content']	= $this->category->like('title', $keyword)->paginate($page)->get();
-		$data['total_rows']	= $this->category->like('title', $keyword)->count();
-		$data['pagination']	= $this->category->makePagination(
+		$data['content']	= $this->Category_model->like('title', $keyword)->paginate($page)->get();
+		$data['total_rows']	= $this->Category_model->like('title', $keyword)->count();
+		$data['pagination']	= $this->Category_model->makePagination(
 			base_url('category/search'), 3, $data['total_rows']
 		);
 		$data['page']		= 'pages/category/index';
@@ -51,12 +52,12 @@ class Category extends MY_Controller
 	public function	create()
 	{
 		if (!$_POST) {
-			$input = (object) $this->category->getDefaultValues();
+			$input = (object) $this->Category_model->getDefaultValues();
 		}else{
 			$input = (object) $this->input->post(null, true);
 		}
 
-		if(!$this->category->validate()){
+		if(!$this->Category_model->validate()){
 			$data['title'] = 'Tambah Kategori';
 			$data['input'] = $input;
 			$data['form_action'] = base_url("category/create");
@@ -66,7 +67,7 @@ class Category extends MY_Controller
 			return;
 		}
 
-		if ($this->category->create($input)) {
+		if ($this->Category_model->create($input)) {
 			$this->session->set_flashdata('success', 'Data Kategori Berhasil Disimpan');
 		}else{
 			$this->session->set_flashdata('error', 'Data Kategori gagal Disimpan');
@@ -76,7 +77,7 @@ class Category extends MY_Controller
 
 	public function edit($id)
 	{
-		$data['content'] = $this->category->where('id', $id)->first();
+		$data['content'] = $this->Category_model->where('id', $id)->first();
 		if(!$data['content'])
 		{
 			$this->session->set_flashdata('warning', 'Maaf! Data Tidak Ditemukan');
@@ -89,7 +90,7 @@ class Category extends MY_Controller
 			$data['input'] = (object) $this->input->post(null, true);
 		}
 
-		if(!$this->category->validate()){
+		if(!$this->Category_model->validate()){
 			$data['title'] = 'Edit Kategori';
 			$data['form_action'] = base_url("category/edit/$id");
 			$data['page'] = 'pages/category/form';
@@ -98,7 +99,7 @@ class Category extends MY_Controller
 			return;
 		}
 
-		if ($this->category->where('id', $id)->update($data['input'])) {
+		if ($this->Category_model->where('id', $id)->update($data['input'])) {
 			$this->session->set_flashdata('success', 'Data Berhasil Diperbaharui');
 		}else{
 			$this->session->set_flashdata('error', 'Data Gagal Diperbaharui');
@@ -112,12 +113,12 @@ class Category extends MY_Controller
 			redirect(base_url('category'));
 		}
 
-		if (!$this->category->where('id', $id)->first()) {
+		if (!$this->Category_model->where('id', $id)->first()) {
 			$this->session->set_flashdata('warning', 'Maaf! Data Tidak Ditemukan');
 			redirect(base_url('category'));
 		}
 
-		if($this->category->where('id', $id)->delete()){
+		if($this->Category_model->where('id', $id)->delete()){
 			$this->session->set_flashdata('success', 'Data Berhasil Dihapus');
 		}else{
 			$this->session->set_flashdata('error', 'Data Gagal Dihapus');
@@ -130,7 +131,7 @@ class Category extends MY_Controller
 	{
 		$slug = $this->input->post('slug');
 		$id = $this->input->post('id');
-		$category = $this->category->where('slug', $slug)->first();
+		$category = $this->Category_model->where('slug', $slug)->first();
 
 		if($category){
 			if ($id == $category->id) {
