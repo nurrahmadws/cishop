@@ -34,7 +34,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?= $this->session->userdata('name') ?></a>
                             <dvi class="dropdown-menu" aria-labelledby="dropdown-2">
-                                <a href="profile.html" class="dropdown-item">Profil</a>
+                                <a href="<?= base_url('/profile') ?>" class="dropdown-item">Profil</a>
                                 <a href="orders.html" class="dropdown-item">Pesanan</a>
                                 <a href="<?= base_url('/logout') ?>" class="dropdown-item">Keluar</a>
                             </dvi>

@@ -50,17 +50,14 @@
 								<?= $row->is_available ? 'Tersedia' : 'Kosong' ?>
 							</td>
 							<td>
-								
-								<a href="<?= base_url("/product/edit/$row->id") ?>">
-									<button class="btn btn-sm">
-										<i class="fas fa-edit text-info"></i>
-									</button>
+							<?= form_open(base_url("/product/delete/$row->id"), ['method'=>'POST']) ?>
+								<?= form_hidden('id', $row->id) ?>
+								<a href="<?= base_url("/product/edit/$row->id") ?>" class="btn btn-sm">
+									<i class="fas fa-edit text-info"></i>
 								</a>
-								<?= form_open(base_url("/product/delete/$row->id"), ['method'=>'POST']) ?>
-									<?= form_hidden('id', $row->id) ?>
-									<button type="submit" class="btn btn-sm" onclick="return confirm('Anda Yakin?')">
-										<i class="fas fa-trash text-danger"></i>
-									</button>
+								<button type="submit" class="btn btn-sm" onclick="return confirm('Anda Yakin?')">
+									<i class="fas fa-trash text-danger"></i>
+								</button>
 								<?= form_close() ?>
 							</td>
 						</tr>

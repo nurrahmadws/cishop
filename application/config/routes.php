@@ -58,3 +58,5 @@ $route['translate_uri_dashes'] = FALSE;
  * '$1' mewakili ':num' diatas, merupakan parameter dari '$page' yang ada didalam method index di Category Controller
  */
 $route['category/(:num)'] = 'category/index/$1';
+$route['product/(:num)'] = 'product/index/$1';
+$route['user/(:num)'] = 'user/index/$1';

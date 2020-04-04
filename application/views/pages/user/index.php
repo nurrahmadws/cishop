@@ -7,14 +7,14 @@
 					<span>Pengguna</span>
 					<a href="<?= base_url('user/create') ?>" class="btn btn-sm btn-secondary">Tambah</a>
 					<div class="float-right">
-						<form action="#">
+						<form action="<?= base_url("user/search") ?>" method="POST">
 							<div class="input-group">
-								<input type="text" class="form-control form-control-sm text-center" placeholder="Cari">
+								<input type="text" class="form-control form-control-sm text-center" placeholder="Cari" value="<?= $this->session->userdata('keyword') ?>">
 								<div class="input-group-append">
 									<button type="submit" class="btn btn-secondary btn-sm">
 										<i class="fas fa-search"></i>
 									</button>
-									<a href="#" class="btn btn-secondary btn-sm">
+									<a href="<?= base_url("user/reset") ?>" class="btn btn-secondary btn-sm">
 										<i class="fas fa-eraser"></i>
 									</a>
 								</div>
@@ -48,16 +48,15 @@
 							<td><?= $row->role?></td>
 							<td><?= $row->is_active ? 'Aktif' : 'Tidak Aktif' ?></td>
 							<td>
-								<form action="#">
-									<a href="#">
-										<button class="btn btn-sm">
-											<i class="fas fa-edit text-info"></i>
-										</button>
+								<?= form_open(base_url("user/delete/$row->id"), ['method' => 'POST']) ?>
+									<?= form_hidden('id', $row->id) ?>
+									<a href="<?= base_url("user/edit/$row->id") ?>">
+										<i class="fas fa-edit text-info"></i>
 									</a>
 									<button type="submit" class="btn btn-sm" onclick="return confirm('Anda Yakin?')">
 										<i class="fas fa-trash text-danger"></i>
 									</button>
-								</form>
+								<?= form_close() ?>
 							</td>
 						</tr>
 						<?php endforeach ?>
