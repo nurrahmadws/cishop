@@ -57,6 +57,43 @@ class SHop extends MY_Controller
         $data['page'] = 'pages/home/index';
         $this->view($data);
 	}
+
+	public function search($page = null)
+	{
+		if (isset($_POST['keyword'])) {
+			$this->session->set_userdata('keyword', $this->input->post('keyword'));
+		} else {
+			redirect(base_url('/'));
+		}
+
+		$keyword	= $this->session->userdata('keyword');
+		$data['title']		= 'Pencarian Produk';
+		$data['content']	= $this->Shop_model->select(
+				[
+					'product.id', 'product.title AS product_title', 'product.image', 
+					'product.price', 'product.is_available', 'product.description',
+					'category.title AS category_title', 'category.slug AS category_slug'
+				]
+			)
+			->join('category')
+			->like('product.title', $keyword)
+			->orLike('product.description', $keyword)
+			->paginate($page)
+			->get();
+		$data['total_rows']	= $this->Shop_model->like('product.title', $keyword)->orLike('product.description', $keyword)->count();
+		$data['pagination']	= $this->Shop_model->makePagination(
+			base_url('shop/search'), 3, $data['total_rows']
+		);
+		$data['page']		= 'pages/home/index';
+		
+		$this->view($data);
+	}
+
+	public function reset()
+	{
+		$this->session->unset_userdata('keyword');
+		redirect(base_url('product'));
+	}
 }
 
 /* End of file SHop.php */

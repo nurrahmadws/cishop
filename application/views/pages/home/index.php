@@ -26,11 +26,12 @@
 									<a href="<?= base_url("/shop/category/$row->category_slug") ?>" class="badge badge-primary"><i class="fas fa-tags"></i> <?= $row->category_title ?></a>
 								</div>
 								<div class="card-footer">
-									<form action="">
+									<form action="<?= base_url("/cart/add") ?>" method="POST">
+										<input type="hidden" name="id_product" value="<?= $row->id ?>">
 										<div class="input-group">
-											<input type="number" class="form-control">
+											<input type="number" name="qty" value="1" class="form-control">
 											<div class="input-group-append">
-												<button class="btn btn-primary">Tambah Ke Keranjang</button>
+												<button class="btn btn-primary">Add to Cart</button>
 											</div>
 										</div>
 									</form>
@@ -51,11 +52,11 @@
                                 Pencarian
                             </div>
                             <div class="card-body">
-                                <form action="">
+                                <form action="<?= base_url("/shop/search") ?>" method="POST">
                                     <div class="input-group">
-                                        <input type="text" class="form-control">
+                                        <input type="text" class="form-control" name="keyword" placeholder="Cari Produk" value="<?= $this->session->userdata('keyword') ?>">
                                         <div class="input-group-append">
-                                            <button class="btn btn-primary">Cari</button>
+                                            <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
                                         </div>
                                     </div>
                                 </form>
