@@ -19,7 +19,6 @@ class Profile extends MY_Controller
 		$this->load->model('Profile_model');
 	}
 	
-
 	public function index()
 	{
 		$data['title']	 = 'Profile';

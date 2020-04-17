@@ -11,9 +11,9 @@
     <link rel="canonical" href="https://getbootstrap.com/docs/4.4/examples/navbar-fixed/">
     
     <!-- Bootstrap core CSS -->
-    <link href="assets/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/libs/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/app.css">
+    <link href="../assets/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/libs/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/app.css">
 </head>
 <body>
     
@@ -24,8 +24,8 @@
     <!-- CONTENT -->
     <?php $this->load->view($page); ?>
     <!-- END CONTENT -->
-    <script src="assets/libs/jquery/jquery-3.4.1.min.js"></script>
-    <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/app.js"></script>
+    <script src="../assets/libs/jquery/jquery-3.4.1.min.js"></script>
+    <script src="../assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/app.js"></script>
 </body>
 </html>

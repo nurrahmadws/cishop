@@ -20,13 +20,14 @@
 							<?php foreach($content as $row) : ?>
 							<tr>
 								<td>
-									<p><img src="<?= $row->image ? base_url("/image/product/$row->image") : base_url('/image/product/default.jpg') ?>" alt="" height="50"> <strong><?= $row->title ?></strong></p>
+									<p><img src="<?= $row->image ? base_url("/images/product/$row->image") : base_url('/image/product/default.jpg') ?>" alt="" height="50"> <strong><?= $row->title ?></strong></p>
 								</td>
 								<td class="text-center">Rp <?= number_format($row->price, 0, ',', '.') ?>,-</td>
 								<td>
-									<form action="">
+									<form action="<?= base_url("cart/update/$row->id") ?>" method="POST">
+										<input type="hidden" name="id" value="<?= $row->id?>">
 										<div class="input-group">
-											<input type="number text-center" class="form-control" value="<?= $row->qty ?>">
+											<input type="number" name="qty" class="form-control text-center" value="<?= $row->qty ?>">
 											<div class="input-group-append">
 												<button class="btn btn-info" type="submit"><i class="fas fa-check"></i></button>
 											</div>
@@ -35,22 +36,23 @@
 								</td>
 								<td class="text-center">Rp <?= number_format($row->subtotal, 0, ',', '.') ?>,-</td>
 								<td>
-									<form action="">
-										<button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+									<form action="<?= base_url("cart/delete/$row->id") ?>" method="POST">
+										<input type="hidden" name="id" value="<?= $row->id?>">
+										<button type="submit" class="btn btn-danger" onclick="return confirm('Anda Yakin?')"><i class="fas fa-trash-alt"></i></button>
 									</form>
 								</td>
 							</tr>
 							<?php endforeach ?>
 							<tr>
 								<td colspan="3"><b>Total:</b></td>
-								<td class="text-center"><b>RP <?= number_format(array_sum(array_column($content, 'subtotal')), 0, ',', '.') ?>,-</b></td>
+								<td class="text-center"><b>Rp <?= number_format(array_sum(array_column($content, 'subtotal')), 0, ',', '.') ?>,-</b></td>
 								<td></td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
 				<div class="card-footer">
-					<a href="checkout.html" class="btn btn-success float-right">Pembayaran <i class="fas fa-angle-right"></i></a>
+					<a href="<?= base_url('/checkout') ?>" class="btn btn-success float-right">Pembayaran <i class="fas fa-angle-right"></i></a>
 					<a href="<?= base_url('/') ?>" class="btn btn-warning text-white"><i class="fas fa-angle-left"></i> Kembali Belanja</a>
 				</div>
 			</div>
